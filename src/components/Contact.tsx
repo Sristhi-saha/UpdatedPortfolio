@@ -1,21 +1,57 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { Mail, Copy, Check, Send, Github, Linkedin, Twitter, MessageSquare, Sparkles, Code2, Trophy } from 'lucide-react';
+import { Mail, Copy, Check, Send, Github, Linkedin, MessageSquare, Sparkles, Code2, Trophy } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { sounds } from '../utils/audio';
+import { gsap } from '../utils/gsapSetup';
+import { motion } from 'framer-motion';
 
 export const Contact: React.FC = () => {
   const { profile } = PORTFOLIO_DATA;
   const [copied, setCopied] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSent, setIsSent] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    projectType: '3D Web Experience / WebGL',
+    projectType: 'Full-Stack SaaS / Next.js Architecture',
     message: '',
   });
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.from('.contact-left', {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+        },
+        opacity: 0,
+        x: -40,
+        duration: 0.9,
+        ease: 'power3.out',
+      });
+
+      gsap.from('.contact-right', {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+        },
+        opacity: 0,
+        x: 40,
+        duration: 0.9,
+        delay: 0.15,
+        ease: 'power3.out',
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(profile.socials.email);
@@ -29,7 +65,6 @@ export const Contact: React.FC = () => {
     sounds.playWarp();
     setIsSubmitting(true);
 
-    // Simulate instant secure transmission
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSent(true);
@@ -44,14 +79,14 @@ export const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden">
+    <section id="contact" ref={sectionRef} className="py-24 relative overflow-hidden">
       {/* Background ambient lighting */}
       <div className="absolute bottom-0 right-1/4 w-[600px] h-[500px] bg-indigo-600/10 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Left Column: Direct Info & Social Channels */}
-          <div className="lg:col-span-5 space-y-8">
+          <div className="contact-left lg:col-span-5 space-y-8">
             <div>
               <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono mb-4 tracking-wider">
                 <Sparkles className="w-3.5 h-3.5" />
@@ -59,10 +94,10 @@ export const Contact: React.FC = () => {
               </div>
               <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
                 Let&apos;s Build <br />
-                <span className="cyber-gradient-text">The Impossible</span> Together.
+                <span className="cyber-gradient-text">High-Impact Software</span> Together.
               </h2>
               <p className="text-slate-400 text-base mt-4 leading-relaxed">
-                Currently exploring high-impact creative engineering opportunities, consulting engagements, and spatial computing ventures.
+                Currently exploring full-time Frontend & Full-Stack software engineering opportunities, generative AI platforms, and creative web experiences.
               </p>
             </div>
 
@@ -83,13 +118,15 @@ export const Contact: React.FC = () => {
                   </div>
                 </div>
 
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={handleCopyEmail}
                   className="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-all shrink-0 ml-3"
                   title="Copy email to clipboard"
                 >
                   {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                </button>
+                </motion.button>
               </div>
 
               {/* Direct Phone / WhatsApp */}
@@ -129,7 +166,8 @@ export const Contact: React.FC = () => {
                   { name: 'LeetCode', href: profile.socials.leetcode, icon: Code2, handle: '120+ Solved' },
                   { name: 'GeeksforGeeks', href: profile.socials.geeksforgeeks, icon: Trophy, handle: 'Sristhi Saha' },
                 ].map((s, idx) => (
-                  <a
+                  <motion.a
+                    whileHover={{ scale: 1.02, x: 2 }}
                     key={idx}
                     href={s.href}
                     target="_blank"
@@ -146,14 +184,14 @@ export const Contact: React.FC = () => {
                         {s.handle}
                       </div>
                     </div>
-                  </a>
+                  </motion.a>
                 ))}
               </div>
             </div>
           </div>
 
           {/* Right Column: Interactive Contact Form */}
-          <div className="lg:col-span-7">
+          <div className="contact-right lg:col-span-7">
             <div className="rounded-3xl glass-panel-glow border border-indigo-500/30 p-6 sm:p-10 relative">
               {isSent ? (
                 <div className="text-center py-12 space-y-4">
@@ -171,7 +209,7 @@ export const Contact: React.FC = () => {
                       setFormData({
                         name: '',
                         email: '',
-                        projectType: '3D Web Experience / WebGL',
+                        projectType: 'Full-Stack SaaS / Next.js Architecture',
                         message: '',
                       });
                     }}
@@ -194,7 +232,7 @@ export const Contact: React.FC = () => {
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="Ada Lovelace"
+                        placeholder="Hiring Manager / Recruiter"
                         className="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 text-white text-sm focus:border-cyan-400 focus:outline-none transition-colors"
                       />
                     </div>
@@ -208,7 +246,7 @@ export const Contact: React.FC = () => {
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="ada@computing.org"
+                        placeholder="recruiter@company.com"
                         className="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 text-white text-sm focus:border-cyan-400 focus:outline-none transition-colors"
                       />
                     </div>
@@ -216,17 +254,17 @@ export const Contact: React.FC = () => {
 
                   <div>
                     <label className="text-xs font-mono text-slate-400 block mb-1.5 uppercase">
-                      Project Objective
+                      Opportunity / Role
                     </label>
                     <select
                       value={formData.projectType}
                       onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 text-white text-sm focus:border-cyan-400 focus:outline-none transition-colors"
                     >
-                      <option value="3D Web Experience / WebGL">3D Web Experience / WebGL Engine</option>
-                      <option value="Full-Stack Application">Full-Stack SaaS / Next.js Architecture</option>
-                      <option value="Interactive Audio / Shader Lab">Interactive Audio / Custom GLSL Shaders</option>
-                      <option value="Full-time / Advisory">Principal Engineer / Advisory Role</option>
+                      <option value="Frontend Developer Role">Frontend Developer (React / Next.js / TypeScript)</option>
+                      <option value="Full-Stack Application">Full-Stack SaaS / AI Engineer</option>
+                      <option value="Creative Web Developer">Creative Web Developer (GSAP / Framer Motion)</option>
+                      <option value="Contract / Freelance">Contract / High-Impact Project</option>
                     </select>
                   </div>
 
@@ -239,15 +277,17 @@ export const Contact: React.FC = () => {
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Tell me about your product vision, timeline, and goals..."
+                      placeholder="Tell me about the role, team, and technology stack..."
                       className="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 text-white text-sm focus:border-cyan-400 focus:outline-none transition-colors resize-none"
                     />
                   </div>
 
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-medium text-sm flex items-center justify-center space-x-2 shadow-lg shadow-indigo-600/30 hover:scale-[1.01] transition-transform disabled:opacity-50"
+                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-medium text-sm flex items-center justify-center space-x-2 shadow-lg shadow-indigo-600/30 transition-transform disabled:opacity-50"
                   >
                     {isSubmitting ? (
                       <span className="font-mono text-xs animate-pulse">TRANSMITTING PACKET...</span>
@@ -257,7 +297,7 @@ export const Contact: React.FC = () => {
                         <span>Dispatch Transmission</span>
                       </>
                     )}
-                  </button>
+                  </motion.button>
                 </form>
               )}
             </div>

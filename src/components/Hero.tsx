@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { ArrowRight, Terminal, Sparkles, Check, Copy, Code2, Globe, Cpu, Laptop, FileText } from 'lucide-react';
+import { ArrowRight, Terminal, Sparkles, Check, Copy, Laptop, Cpu, FileText } from 'lucide-react';
 import { sounds } from '../utils/audio';
+import { gsap } from '../utils/gsapSetup';
+import { motion } from 'framer-motion';
 
 interface HeroProps {
   onOpenTerminal: () => void;
@@ -10,26 +14,42 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ onOpenTerminal }) => {
   const { profile } = PORTFOLIO_DATA;
   const [copiedCode, setCopiedCode] = useState(false);
+  const heroRef = useRef<HTMLDivElement>(null);
 
-  const codeSnippet = `const developer = {
-  name: "Sristhi Saha",
-  role: "Frontend Developer",
-  company: "Orbital Webworks",
-  education: "BCA (CGPA: 8.5/10.0)",
-  dsaSolved: "120+ Problems",
-  coreStack: ["React.js", "Next.js", "NestJS", "Gemini AI"],
-  availableForHire: true
-};`;
+  useEffect(() => {
+    if (!heroRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      tl.from('.hero-badge', { opacity: 0, y: -20, duration: 0.7 })
+        .from('.hero-title', { opacity: 0, y: 35, duration: 0.9 }, '-=0.4')
+        .from('.hero-desc', { opacity: 0, y: 20, duration: 0.8 }, '-=0.5')
+        .from('.hero-btn', { opacity: 0, y: 20, stagger: 0.1, duration: 0.6 }, '-=0.4')
+        .from('.hero-stat', { opacity: 0, y: 20, stagger: 0.1, duration: 0.6 }, '-=0.3')
+        .from('.hero-code-card', { opacity: 0, scale: 0.94, duration: 1, ease: 'back.out(1.2)' }, '-=0.7');
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const copySnippet = () => {
     sounds.playClick();
-    navigator.clipboard.writeText(codeSnippet);
+    const code = `const developer = {
+  name: "Sristhi Saha",
+  role: "Frontend Developer @ Orbital Webworks",
+  education: "BCA (CGPA: 8.5/10.0)",
+  dsaSolved: "120+ (LeetCode & GFG)",
+  coreStack: ["React.js", "Next.js", "GSAP", "Framer Motion", "Gemini AI"],
+  openToWork: true
+};`;
+    navigator.clipboard.writeText(code);
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 2000);
   };
 
   return (
-    <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+    <section ref={heroRef} className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
       {/* Subtle background ambient gradients */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-1/3 right-10 w-[450px] h-[450px] bg-cyan-500/10 rounded-full blur-[150px] pointer-events-none" />
@@ -39,7 +59,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTerminal }) => {
           {/* Left Column: Bio & CTA */}
           <div className="lg:col-span-6 space-y-6">
             {/* Availability Pill */}
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono tracking-wide">
+            <div className="hero-badge inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono tracking-wide">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -49,60 +69,67 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTerminal }) => {
 
             {/* Main Headline */}
             <div className="space-y-3">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
+              <h1 className="hero-title text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
                 Frontend Developer <br />
                 <span className="cyber-gradient-text">& AI Architect</span>
               </h1>
-              <p className="text-slate-400 text-base sm:text-lg max-w-xl leading-relaxed">
-                Hello, I&apos;m <span className="text-white font-medium">{profile.name}</span> — Frontend Developer at Orbital Webworks, crafting high-performance React/Next.js interfaces, distributed backend architectures, and Gemini AI agentic systems.
+              <p className="hero-desc text-slate-400 text-base sm:text-lg max-w-xl leading-relaxed">
+                Hello, I&apos;m <span className="text-white font-medium">{profile.name}</span> — Frontend Developer at Orbital Webworks, crafting high-performance Next.js interfaces with GSAP ScrollTrigger, Framer Motion, and autonomous Gemini AI architectures.
               </p>
             </div>
 
             {/* CTAs */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
-              <a
+              <motion.a
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
                 href="#projects"
                 onClick={() => sounds.playClick()}
-                className="group relative inline-flex items-center space-x-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-medium text-sm shadow-lg shadow-indigo-600/30 hover:shadow-cyan-500/40 hover:scale-[1.02] transition-all"
+                className="hero-btn group relative inline-flex items-center space-x-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-medium text-sm shadow-lg shadow-indigo-600/30 hover:shadow-cyan-500/40 transition-all"
               >
                 <span>View My Projects</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </a>
+              </motion.a>
 
-              <a
+              <motion.a
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
                 href="#resume"
                 onClick={() => sounds.playClick()}
-                className="inline-flex items-center space-x-2 px-5 py-3.5 rounded-2xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-sm font-medium transition-all hover:scale-[1.02]"
+                className="hero-btn inline-flex items-center space-x-2 px-5 py-3.5 rounded-2xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-sm font-medium transition-all"
               >
                 <FileText className="w-4 h-4 text-indigo-400" />
                 <span>Resume / CV</span>
-              </a>
+              </motion.a>
 
-              <button
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => {
                   sounds.playWarp();
                   onOpenTerminal();
                 }}
-                className="inline-flex items-center space-x-2 px-5 py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/80 text-slate-200 text-sm font-mono transition-all hover:scale-[1.02]"
+                className="hero-btn inline-flex items-center space-x-2 px-5 py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/80 text-slate-200 text-sm font-mono transition-all"
               >
                 <Terminal className="w-4 h-4 text-cyan-400" />
                 <span>Terminal</span>
-              </button>
+              </motion.button>
 
-              <a
+              <motion.a
+                whileHover={{ scale: 1.05 }}
                 href="#contact"
                 onClick={() => sounds.playClick()}
-                className="inline-flex items-center space-x-2 px-4 py-3.5 rounded-2xl text-slate-400 hover:text-white text-sm font-medium transition-colors"
+                className="hero-btn inline-flex items-center space-x-2 px-4 py-3.5 rounded-2xl text-slate-400 hover:text-white text-sm font-medium transition-colors"
               >
                 <Sparkles className="w-4 h-4 text-indigo-400" />
                 <span>Contact</span>
-              </a>
+              </motion.a>
             </div>
 
             {/* Real-time Metrics Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-slate-800/80">
               {profile.stats.map((stat, idx) => (
-                <div key={idx} className="space-y-1">
+                <div key={idx} className="hero-stat space-y-1">
                   <div className="text-2xl sm:text-3xl font-bold font-mono text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300">
                     {stat.value}
                   </div>
@@ -116,7 +143,11 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTerminal }) => {
 
           {/* Right Column: Clean, Minimalist Interactive Developer Card */}
           <div className="lg:col-span-6 relative">
-            <div className="code-window rounded-3xl bg-[#090d16] border border-indigo-500/30 p-6 md:p-8 shadow-2xl relative overflow-hidden">
+            <motion.div
+              whileHover={{ y: -4 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="hero-code-card code-window rounded-3xl bg-[#090d16] border border-indigo-500/30 p-6 md:p-8 shadow-2xl relative overflow-hidden"
+            >
               {/* Window Header */}
               <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-800/80">
                 <div className="flex items-center space-x-2">
@@ -143,8 +174,8 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTerminal }) => {
                 <p className="pl-4"><span className="text-slate-400">currentRole:</span> <span className="text-emerald-300">&quot;Frontend Developer @ Orbital Webworks&quot;</span>,</p>
                 <p className="pl-4"><span className="text-slate-400">education:</span> <span className="text-emerald-300">&quot;BCA • CGPA 8.5/10.0&quot;</span>,</p>
                 <p className="pl-4"><span className="text-slate-400">dsaSolved:</span> <span className="text-cyan-400">&quot;120+ (LeetCode & GFG)&quot;</span>,</p>
-                <p className="pl-4"><span className="text-slate-400">languages:</span> [<span className="text-amber-300">&quot;JavaScript&quot;</span>, <span className="text-amber-300">&quot;TypeScript&quot;</span>, <span className="text-amber-300">&quot;C++&quot;</span>, <span className="text-amber-300">&quot;Java&quot;</span>],</p>
-                <p className="pl-4"><span className="text-slate-400">coreTech:</span> [<span className="text-cyan-300">&quot;React.js&quot;</span>, <span className="text-cyan-300">&quot;Next.js&quot;</span>, <span className="text-cyan-300">&quot;NestJS&quot;</span>, <span className="text-cyan-300">&quot;Gemini AI&quot;</span>],</p>
+                <p className="pl-4"><span className="text-slate-400">frameworks:</span> [<span className="text-amber-300">&quot;Next.js&quot;</span>, <span className="text-amber-300">&quot;React.js&quot;</span>, <span className="text-amber-300">&quot;NestJS&quot;</span>],</p>
+                <p className="pl-4"><span className="text-slate-400">motionStack:</span> [<span className="text-cyan-300">&quot;GSAP&quot;</span>, <span className="text-cyan-300">&quot;ScrollTrigger&quot;</span>, <span className="text-cyan-300">&quot;Framer Motion&quot;</span>],</p>
                 <p className="pl-4"><span className="text-slate-400">openToWork:</span> <span className="text-emerald-400">true</span></p>
                 <p>&#125;;</p>
               </div>
@@ -162,12 +193,12 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTerminal }) => {
                 <div className="p-3 rounded-xl bg-slate-900/70 border border-slate-800 flex items-center space-x-2.5">
                   <Cpu className="w-4 h-4 text-indigo-400 shrink-0" />
                   <div>
-                    <span className="text-slate-500 block text-[10px]">AGENTIC AI</span>
-                    <span className="text-white font-semibold">Gemini + LangGraph</span>
+                    <span className="text-slate-500 block text-[10px]">MOTION & AI</span>
+                    <span className="text-white font-semibold">GSAP + Gemini AI</span>
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

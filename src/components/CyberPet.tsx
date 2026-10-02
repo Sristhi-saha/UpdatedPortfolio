@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState, useRef } from 'react';
 import { sounds } from '../utils/audio';
 import { Sparkles, Heart, Zap, Bot, Moon, Eye } from 'lucide-react';

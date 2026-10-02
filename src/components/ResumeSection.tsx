@@ -1,13 +1,38 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { FileText, Download, ExternalLink, Printer, Check, Copy, Sparkles, GraduationCap, Briefcase, Trophy, Code2 } from 'lucide-react';
+import { FileText, Download, ExternalLink, Printer, Check, Copy, GraduationCap, Briefcase, Trophy, Code2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { sounds } from '../utils/audio';
+import { gsap } from '../utils/gsapSetup';
+import { motion } from 'framer-motion';
 
 export const ResumeSection: React.FC = () => {
-  const { profile, education, experiences, achievements } = PORTFOLIO_DATA;
+  const { profile, education, experiences } = PORTFOLIO_DATA;
   const [downloaded, setDownloaded] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.from('.resume-hub-card', {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+        },
+        opacity: 0,
+        y: 40,
+        scale: 0.96,
+        duration: 0.9,
+        ease: 'power3.out',
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const handleDownload = () => {
     sounds.playSuccess();
@@ -29,7 +54,7 @@ export const ResumeSection: React.FC = () => {
   };
 
   return (
-    <section id="resume" className="py-24 relative overflow-hidden">
+    <section id="resume" ref={sectionRef} className="py-24 relative overflow-hidden">
       {/* Ambient background lighting */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none" />
 
@@ -50,7 +75,11 @@ export const ResumeSection: React.FC = () => {
 
         {/* Central Document Card & Action Hub */}
         <div className="max-w-4xl mx-auto">
-          <div className="glass-panel-glow rounded-3xl border border-indigo-500/30 p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+          <motion.div
+            whileHover={{ y: -3 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            className="resume-hub-card glass-panel-glow rounded-3xl border border-indigo-500/30 p-6 sm:p-10 shadow-2xl relative overflow-hidden"
+          >
             {/* Top Bar with Document Metadata */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800/80 mb-8">
               <div className="flex items-center space-x-4">
@@ -65,24 +94,28 @@ export const ResumeSection: React.FC = () => {
                     </span>
                   </h3>
                   <p className="text-xs text-slate-400 font-mono mt-0.5">
-                    Format: PDF • Updated: October 2026 • Size: 4.1 KB
+                    Format: PDF • Updated: October 2026 • Verified Profile
                   </p>
                 </div>
               </div>
 
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center gap-2.5">
-                <a
+                <motion.a
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                   href={profile.resumeUrl || "/Sristhi_Saha_Resume.pdf"}
                   download="Sristhi_Saha_Resume.pdf"
                   onClick={handleDownload}
-                  className="py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-mono text-xs font-semibold flex items-center space-x-2 shadow-lg shadow-indigo-600/30 hover:scale-[1.02] transition-transform"
+                  className="py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-mono text-xs font-semibold flex items-center space-x-2 shadow-lg shadow-indigo-600/30 transition-transform"
                 >
                   {downloaded ? <Check className="w-4 h-4" /> : <Download className="w-4 h-4" />}
                   <span>{downloaded ? 'Downloaded!' : 'Download PDF'}</span>
-                </a>
+                </motion.a>
 
-                <a
+                <motion.a
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                   href={profile.resumeUrl || "/Sristhi_Saha_Resume.pdf"}
                   target="_blank"
                   rel="noreferrer"
@@ -92,10 +125,12 @@ export const ResumeSection: React.FC = () => {
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                   <span>View</span>
-                </a>
+                </motion.a>
 
                 {profile.resumeDriveUrl && (
-                  <a
+                  <motion.a
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
                     href={profile.resumeDriveUrl}
                     target="_blank"
                     rel="noreferrer"
@@ -105,7 +140,7 @@ export const ResumeSection: React.FC = () => {
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     <span>Drive Link</span>
-                  </a>
+                  </motion.a>
                 )}
 
                 <button
@@ -194,7 +229,7 @@ export const ResumeSection: React.FC = () => {
                     CORE SPECIALIZATION
                   </span>
                   <div className="text-xs font-bold text-white mt-0.5">
-                    React.js, Next.js, NestJS & Gemini AI
+                    Next.js, React.js, GSAP, NestJS & Gemini AI
                   </div>
                   <div className="text-[11px] text-slate-400">
                     Full-Stack MERN, Modular Monolith, LangGraph
@@ -221,7 +256,7 @@ export const ResumeSection: React.FC = () => {
                 <span>Tel: <a href={`tel:${profile.phone}`} className="text-cyan-400 hover:underline">{profile.phone}</a></span>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

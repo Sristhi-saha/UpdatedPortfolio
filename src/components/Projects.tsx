@@ -1,19 +1,44 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { PORTFOLIO_DATA, Project } from '../data/portfolioData';
 import { ExternalLink, Github, Sparkles, Layers, ArrowUpRight, X, Heart, Bot, FileText, Cpu, CheckCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { sounds } from '../utils/audio';
+import { gsap } from '../utils/gsapSetup';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export const Projects: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [activeModalProject, setActiveModalProject] = useState<Project | null>(null);
   const [likes, setLikes] = useState<Record<string, number>>({});
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   const categories = ['All', 'AI & Spatial', 'Full-Stack SaaS', '3D Web & WebGL'];
 
   const filteredProjects = selectedCategory === 'All'
     ? PORTFOLIO_DATA.projects
     : PORTFOLIO_DATA.projects.filter((p) => p.category === selectedCategory);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.from('.project-card', {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+        },
+        opacity: 0,
+        y: 40,
+        stagger: 0.15,
+        duration: 0.8,
+        ease: 'power3.out',
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [selectedCategory]);
 
   const handleLike = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
@@ -41,7 +66,7 @@ export const Projects: React.FC = () => {
   };
 
   return (
-    <section id="projects" className="py-24 relative overflow-hidden">
+    <section id="projects" ref={sectionRef} className="py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
@@ -58,7 +83,9 @@ export const Projects: React.FC = () => {
           {/* Filter Pills */}
           <div className="flex flex-wrap gap-2">
             {categories.map((cat) => (
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 key={cat}
                 onClick={() => {
                   sounds.playClick();
@@ -71,24 +98,26 @@ export const Projects: React.FC = () => {
                 }`}
               >
                 {cat === 'AI & Spatial' ? 'Agentic AI' : cat}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
 
-        {/* Project Grid - Clean, Modern & Fast */}
+        {/* Project Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project) => {
             const currentLikes = likes[project.id] || 0;
 
             return (
-              <div
+              <motion.div
+                whileHover={{ y: -6 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 key={project.id}
                 onClick={() => {
                   sounds.playWarp();
                   setActiveModalProject(project);
                 }}
-                className="group relative rounded-3xl glass-panel border border-slate-800/80 hover:border-indigo-500/40 p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-indigo-950/40 cursor-pointer overflow-hidden"
+                className="project-card group relative rounded-3xl glass-panel border border-slate-800/80 hover:border-indigo-500/40 p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:shadow-indigo-950/40 cursor-pointer overflow-hidden"
               >
                 <div>
                   {/* Clean Card Top Bar */}
@@ -154,7 +183,9 @@ export const Projects: React.FC = () => {
                 {/* Direct Action Buttons: Live Link & GitHub */}
                 <div className="flex items-center gap-2 pt-1">
                   {project.liveUrl && (
-                    <a
+                    <motion.a
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       href={project.liveUrl}
                       target="_blank"
                       rel="noreferrer"
@@ -162,14 +193,16 @@ export const Projects: React.FC = () => {
                         e.stopPropagation();
                         sounds.playClick();
                       }}
-                      className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-mono text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md shadow-indigo-600/20 hover:scale-[1.02] transition-transform"
+                      className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-mono text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md shadow-indigo-600/20 transition-transform"
                     >
                       <span>Live Link</span>
                       <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
+                    </motion.a>
                   )}
 
-                  <a
+                  <motion.a
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     href={project.githubUrl}
                     target="_blank"
                     rel="noreferrer"
@@ -177,105 +210,117 @@ export const Projects: React.FC = () => {
                       e.stopPropagation();
                       sounds.playClick();
                     }}
-                    className="flex-1 py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 hover:border-slate-600 text-slate-200 font-mono text-xs font-medium flex items-center justify-center space-x-1.5 hover:scale-[1.02] transition-transform"
+                    className="flex-1 py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 hover:border-slate-600 text-slate-200 font-mono text-xs font-medium flex items-center justify-center space-x-1.5 transition-transform"
                   >
                     <Github className="w-3.5 h-3.5" />
                     <span>GitHub</span>
-                  </a>
+                  </motion.a>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
       </div>
 
-      {/* Case Study Modal */}
-      {activeModalProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto glass-panel-glow border border-indigo-500/40 rounded-3xl p-6 md:p-8 shadow-2xl">
-            {/* Close Button */}
-            <button
-              onClick={() => {
-                sounds.playClick();
-                setActiveModalProject(null);
-              }}
-              className="absolute top-5 right-5 p-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-400 hover:text-white transition-colors"
+      {/* Case Study Modal with Framer Motion */}
+      <AnimatePresence>
+        {activeModalProject && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto glass-panel-glow border border-indigo-500/40 rounded-3xl p-6 md:p-8 shadow-2xl"
             >
-              <X className="w-5 h-5" />
-            </button>
+              {/* Close Button */}
+              <button
+                onClick={() => {
+                  sounds.playClick();
+                  setActiveModalProject(null);
+                }}
+                className="absolute top-5 right-5 p-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-400 hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
 
-            {/* Modal Header */}
-            <div className="mb-6">
-              <span className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono mb-2">
-                {activeModalProject.category}
-              </span>
-              <h3 className="text-2xl md:text-3xl font-bold text-white">
-                {activeModalProject.title}
-              </h3>
-            </div>
-
-            {/* Deep Dive Description */}
-            <div className="space-y-4 mb-6">
-              <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-wider">
-                Architecture & Implementation Details
-              </h4>
-              <p className="text-sm text-slate-300 leading-relaxed">
-                {activeModalProject.longDescription}
-              </p>
-            </div>
-
-            {/* Metrics */}
-            <div className="p-3.5 rounded-2xl bg-indigo-950/30 border border-indigo-500/30 text-xs font-mono text-cyan-300 mb-6 flex items-center justify-between">
-              <span>SYSTEM HIGHLIGHT:</span>
-              <span className="font-semibold text-white">{activeModalProject.metrics}</span>
-            </div>
-
-            {/* Tech Stack Full */}
-            <div className="mb-8">
-              <h4 className="text-xs font-mono text-slate-400 uppercase tracking-wider mb-2">
-                Technologies Utilized
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {activeModalProject.tech.map((t, i) => (
-                  <span
-                    key={i}
-                    className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-slate-300"
-                  >
-                    {t}
-                  </span>
-                ))}
+              {/* Modal Header */}
+              <div className="mb-6">
+                <span className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono mb-2">
+                  {activeModalProject.category}
+                </span>
+                <h3 className="text-2xl md:text-3xl font-bold text-white">
+                  {activeModalProject.title}
+                </h3>
               </div>
-            </div>
 
-            {/* Action Links in Modal */}
-            <div className="flex flex-wrap gap-3 pt-4 border-t border-slate-800">
-              {activeModalProject.liveUrl && (
-                <a
-                  href={activeModalProject.liveUrl}
+              {/* Deep Dive Description */}
+              <div className="space-y-4 mb-6">
+                <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-wider">
+                  Architecture & Implementation Details
+                </h4>
+                <p className="text-sm text-slate-300 leading-relaxed">
+                  {activeModalProject.longDescription}
+                </p>
+              </div>
+
+              {/* Metrics */}
+              <div className="p-3.5 rounded-2xl bg-indigo-950/30 border border-indigo-500/30 text-xs font-mono text-cyan-300 mb-6 flex items-center justify-between">
+                <span>SYSTEM HIGHLIGHT:</span>
+                <span className="font-semibold text-white">{activeModalProject.metrics}</span>
+              </div>
+
+              {/* Tech Stack Full */}
+              <div className="mb-8">
+                <h4 className="text-xs font-mono text-slate-400 uppercase tracking-wider mb-2">
+                  Technologies Utilized
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {activeModalProject.tech.map((t, i) => (
+                    <span
+                      key={i}
+                      className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-slate-300"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Links in Modal */}
+              <div className="flex flex-wrap gap-3 pt-4 border-t border-slate-800">
+                {activeModalProject.liveUrl && (
+                  <motion.a
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    href={activeModalProject.liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => sounds.playClick()}
+                    className="flex-1 inline-flex items-center justify-center space-x-2 py-3 px-5 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-mono text-xs font-medium shadow-lg shadow-indigo-600/30 transition-transform"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <span>Launch Live Link</span>
+                  </motion.a>
+                )}
+
+                <motion.a
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  href={activeModalProject.githubUrl}
                   target="_blank"
                   rel="noreferrer"
                   onClick={() => sounds.playClick()}
-                  className="flex-1 inline-flex items-center justify-center space-x-2 py-3 px-5 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-mono text-xs font-medium shadow-lg shadow-indigo-600/30 hover:scale-[1.01] transition-transform"
+                  className="flex-1 inline-flex items-center justify-center space-x-2 py-3 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-mono text-xs font-medium transition-colors"
                 >
-                  <ExternalLink className="w-4 h-4" />
-                  <span>Launch Live Link</span>
-                </a>
-              )}
-
-              <a
-                href={activeModalProject.githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => sounds.playClick()}
-                className="flex-1 inline-flex items-center justify-center space-x-2 py-3 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-mono text-xs font-medium transition-colors hover:scale-[1.01]"
-              >
-                <Github className="w-4 h-4" />
-                <span>View on GitHub</span>
-              </a>
-            </div>
+                  <Github className="w-4 h-4" />
+                  <span>View on GitHub</span>
+                </motion.a>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </section>
   );
 };

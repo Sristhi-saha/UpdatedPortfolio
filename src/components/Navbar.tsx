@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Volume2, VolumeX, Terminal, Menu, X, Sparkles, Flashlight, Sun, Moon } from 'lucide-react';
 import { sounds } from '../utils/audio';

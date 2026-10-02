@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { ArrowUp, Sparkles, Terminal, Code2, Heart } from 'lucide-react';
 import confetti from 'canvas-confetti';

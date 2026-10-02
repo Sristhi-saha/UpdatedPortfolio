@@ -1,11 +1,36 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { Cpu, Boxes, Code2, Sparkles, Terminal, CheckCircle } from 'lucide-react';
+import { Cpu, Boxes, Code2, Sparkles, CheckCircle } from 'lucide-react';
 import { sounds } from '../utils/audio';
+import { gsap } from '../utils/gsapSetup';
+import { motion } from 'framer-motion';
 
 export const SkillsMatrix: React.FC = () => {
   const { skillCategories } = PORTFOLIO_DATA;
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.from('.skill-card', {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+        },
+        opacity: 0,
+        y: 40,
+        stagger: 0.15,
+        duration: 0.8,
+        ease: 'power3.out',
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
@@ -20,7 +45,7 @@ export const SkillsMatrix: React.FC = () => {
   };
 
   return (
-    <section id="skills" className="py-24 relative overflow-hidden">
+    <section id="skills" ref={sectionRef} className="py-24 relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-cyan-600/10 rounded-full blur-[160px] pointer-events-none" />
 
@@ -34,16 +59,18 @@ export const SkillsMatrix: React.FC = () => {
             Specialized <span className="cyber-gradient-text">Competencies & Capabilities</span>
           </h2>
           <p className="text-slate-400 text-base md:text-lg mt-3">
-            A battle-tested arsenal bridging hardware-accelerated 3D shaders, reactive client architectures, and distributed systems.
+            A battle-tested arsenal bridging Next.js, GSAP ScrollTrigger, Framer Motion, reactive client architectures, and distributed AI systems.
           </p>
         </div>
 
         {/* Skill Category Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {skillCategories.map((category, idx) => (
-            <div
+            <motion.div
+              whileHover={{ y: -6 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               key={idx}
-              className="rounded-3xl glass-panel border border-slate-800 p-6 md:p-8 flex flex-col justify-between hover:border-indigo-500/40 transition-all hover:shadow-xl hover:shadow-indigo-950/40"
+              className="skill-card rounded-3xl glass-panel border border-slate-800 p-6 md:p-8 flex flex-col justify-between hover:border-indigo-500/40 transition-all hover:shadow-xl hover:shadow-indigo-950/40"
             >
               <div>
                 <div className="flex items-center space-x-3 mb-4">
@@ -97,7 +124,7 @@ export const SkillsMatrix: React.FC = () => {
                 <span>VERIFIED PRODUCTION-READY</span>
                 <CheckCircle className="w-4 h-4 text-emerald-400" />
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
@@ -108,18 +135,20 @@ export const SkillsMatrix: React.FC = () => {
           </span>
           <div className="flex flex-wrap justify-center gap-2 max-w-4xl mx-auto">
             {[
-              'React.js', 'Next.js', 'TypeScript', 'Node.js', 'NestJS', 'MongoDB',
-              'PostgreSQL', 'RabbitMQ', 'Gemini AI API', 'LangChain', 'LangGraph',
-              'Redis', 'Drizzle ORM', 'Docker', 'Git & GitHub', 'Postman', 'WordPress',
-              'WCAG Accessibility', 'WebSockets', 'SSE', 'Framer Motion', 'GSAP', 'Tailwind CSS'
+              'Next.js', 'React.js', 'GSAP', 'ScrollTrigger', 'Framer Motion', 'TypeScript',
+              'Node.js', 'NestJS', 'MongoDB', 'PostgreSQL', 'RabbitMQ', 'Gemini AI API',
+              'LangChain', 'LangGraph', 'Redis', 'Drizzle ORM', 'Docker', 'Git & GitHub',
+              'Tailwind CSS', 'WebSockets', 'WCAG Accessibility'
             ].map((tech, idx) => (
-              <span
+              <motion.span
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.95 }}
                 key={idx}
                 onClick={() => sounds.playClick()}
                 className="px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-400/40 text-xs font-mono text-slate-300 hover:text-cyan-300 cursor-pointer transition-all"
               >
                 #{tech}
-              </span>
+              </motion.span>
             ))}
           </div>
         </div>

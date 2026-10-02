@@ -1,13 +1,38 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useRef } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { Briefcase, Calendar, MapPin, ChevronRight } from 'lucide-react';
+import { Briefcase, MapPin, ChevronRight } from 'lucide-react';
 import { sounds } from '../utils/audio';
+import { gsap } from '../utils/gsapSetup';
+import { motion } from 'framer-motion';
 
 export const ExperienceTimeline: React.FC = () => {
   const { experiences } = PORTFOLIO_DATA;
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.from('.timeline-item', {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+        },
+        opacity: 0,
+        x: -30,
+        stagger: 0.25,
+        duration: 0.9,
+        ease: 'power3.out',
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section id="experience" className="py-24 relative overflow-hidden">
+    <section id="experience" ref={sectionRef} className="py-24 relative overflow-hidden">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono mb-4 tracking-wider">
@@ -18,7 +43,7 @@ export const ExperienceTimeline: React.FC = () => {
             Work Experience & <span className="cyber-gradient-text">Leadership</span>
           </h2>
           <p className="text-slate-400 text-base md:text-lg mt-3">
-            Proven track record delivering mission-critical web applications, high-performance WebGL platforms, and leading engineering squads.
+            Proven track record delivering high-performance Next.js interfaces, responsive React components at Orbital Webworks, and AI agent platforms.
           </p>
         </div>
 
@@ -28,7 +53,7 @@ export const ExperienceTimeline: React.FC = () => {
             <div
               key={idx}
               onMouseEnter={() => sounds.playHover()}
-              className="relative pl-8 md:pl-10 group"
+              className="timeline-item relative pl-8 md:pl-10 group"
             >
               {/* Glowing Timeline Marker */}
               <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-cyan-400 group-hover:scale-125 group-hover:bg-cyan-400 transition-all shadow-md shadow-cyan-500/50" />
@@ -39,7 +64,11 @@ export const ExperienceTimeline: React.FC = () => {
               </div>
 
               {/* Card */}
-              <div className="rounded-3xl glass-panel border border-slate-800 p-6 md:p-8 hover:border-indigo-500/40 transition-all hover:shadow-xl hover:shadow-indigo-950/40">
+              <motion.div
+                whileHover={{ y: -4 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="rounded-3xl glass-panel border border-slate-800 p-6 md:p-8 hover:border-indigo-500/40 transition-all hover:shadow-xl hover:shadow-indigo-950/40"
+              >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                   <div>
                     <h3 className="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">
@@ -65,7 +94,7 @@ export const ExperienceTimeline: React.FC = () => {
                   ))}
                 </ul>
 
-                  {/* Technologies */}
+                {/* Technologies */}
                 <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-800/80">
                   {exp.technologies.map((tech, tIdx) => (
                     <span
@@ -76,14 +105,14 @@ export const ExperienceTimeline: React.FC = () => {
                     </span>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             </div>
           ))}
 
           {/* Education Timeline Node */}
           <div
             onMouseEnter={() => sounds.playHover()}
-            className="relative pl-8 md:pl-10 group"
+            className="timeline-item relative pl-8 md:pl-10 group"
           >
             {/* Glowing Marker */}
             <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-indigo-400 group-hover:scale-125 group-hover:bg-indigo-400 transition-all shadow-md shadow-indigo-500/50" />
@@ -94,7 +123,11 @@ export const ExperienceTimeline: React.FC = () => {
             </div>
 
             {/* Card */}
-            <div className="rounded-3xl glass-panel border border-slate-800 p-6 md:p-8 hover:border-indigo-500/40 transition-all hover:shadow-xl hover:shadow-indigo-950/40">
+            <motion.div
+              whileHover={{ y: -4 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="rounded-3xl glass-panel border border-slate-800 p-6 md:p-8 hover:border-indigo-500/40 transition-all hover:shadow-xl hover:shadow-indigo-950/40"
+            >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                 <div>
                   <h3 className="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">
@@ -129,7 +162,7 @@ export const ExperienceTimeline: React.FC = () => {
                   </span>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

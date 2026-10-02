@@ -78,7 +78,7 @@ export function App() {
         <About />
         <ExperienceTimeline />
         <Projects />
-        {/* <ResumeSection /> */}
+        <ResumeSection />
         <SkillsMatrix />
         <Contact />
       </main>
