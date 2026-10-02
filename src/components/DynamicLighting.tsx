@@ -190,16 +190,16 @@ export const DynamicLighting: React.FC<DynamicLightingProps> = ({
                 : 'border-slate-800 text-slate-400'
             }`}
           >
-            <Flashlight className={`w-4 h-4 ${lightMode !== 'off' ? 'text-cyan-400 animate-pulse' : 'text-slate-500'}`} />
+            <Flashlight className={`w-4 h-4 ${lightMode !== 'off' ? 'text-indigo-600 dark:text-cyan-400 animate-pulse' : 'text-slate-500'}`} />
             <div className="flex flex-col text-left">
-              <span className="font-bold text-[11px] leading-tight flex items-center gap-1 text-slate-200">
+              <span className="font-bold text-[11px] leading-tight flex items-center gap-1 text-slate-900 dark:text-slate-200">
                 Light Beam
                 <span
                   className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: lightMode !== 'off' ? lightColor : '#64748b' }}
+                  style={{ backgroundColor: lightMode !== 'off' ? lightColor : '#32517c' }}
                 />
               </span>
-              <span className="text-[9px] font-mono text-slate-400 uppercase">
+              <span className="text-[9px] font-mono text-slate-600 dark:text-slate-400 uppercase">
                 {lightMode}
               </span>
             </div>

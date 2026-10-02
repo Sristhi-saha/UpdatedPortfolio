@@ -4,7 +4,6 @@ import { Hero } from './components/Hero';
 import { About } from './components/About';
 import { ExperienceTimeline } from './components/ExperienceTimeline';
 import { Projects } from './components/Projects';
-import { ResumeSection } from './components/ResumeSection';
 import { SkillsMatrix } from './components/SkillsMatrix';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
@@ -40,7 +39,7 @@ export function App() {
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'bg-[#050711] text-slate-100' : 'bg-[#f8fafc] text-slate-900'} relative transition-colors duration-300 selection:bg-indigo-500/30 selection:text-cyan-300`}>
       {/* Background Cyber Grid & Radial Gradient */}
-      <div className={`fixed inset-0 cyber-grid ${theme === 'dark' ? 'opacity-70' : 'opacity-40'} pointer-events-none z-0`} />
+      <div className={`fixed inset-0 cyber-grid ${theme === 'dark' ? 'opacity-80' : 'opacity-100'} pointer-events-none z-0`} />
       {theme === 'dark' && (
         <div className="fixed inset-0 bg-radial-gradient from-transparent via-[#050711]/60 to-[#050711] pointer-events-none z-0" />
       )}
@@ -75,11 +74,10 @@ export function App() {
       {/* Main Content Layout */}
       <main className="relative z-10">
         <Hero onOpenTerminal={() => setTerminalOpen(true)} />
-        <About />
+        {/* <About /> */}
         <ExperienceTimeline />
         <Projects />
-        <ResumeSection />
-        <SkillsMatrix />
+        {/* <SkillsMatrix /> */}
         <Contact />
       </main>
 

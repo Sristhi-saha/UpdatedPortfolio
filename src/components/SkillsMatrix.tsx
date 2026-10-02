@@ -35,12 +35,12 @@ export const SkillsMatrix: React.FC = () => {
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'Boxes':
-        return <Boxes className="w-5 h-5 text-cyan-400" />;
+        return <Boxes className="w-5 h-5 text-indigo-600 dark:text-cyan-400" />;
       case 'Code2':
-        return <Code2 className="w-5 h-5 text-indigo-400" />;
+        return <Code2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />;
       case 'Cpu':
       default:
-        return <Cpu className="w-5 h-5 text-purple-400" />;
+        return <Cpu className="w-5 h-5 text-violet-600 dark:text-purple-400" />;
     }
   };
 
@@ -51,14 +51,14 @@ export const SkillsMatrix: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-mono mb-4 tracking-wider">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/30 text-indigo-700 dark:text-indigo-400 text-xs font-mono font-semibold mb-4 tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
             <span>CORE PROFICIENCIES // TECH MATRIX</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+          <h2 className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white tracking-tight">
             Specialized <span className="cyber-gradient-text">Competencies & Capabilities</span>
           </h2>
-          <p className="text-slate-400 text-base md:text-lg mt-3">
+          <p className="text-slate-600 dark:text-slate-400 text-base md:text-lg mt-3">
             A battle-tested arsenal bridging Next.js, GSAP ScrollTrigger, Framer Motion, reactive client architectures, and distributed AI systems.
           </p>
         </div>
@@ -70,16 +70,16 @@ export const SkillsMatrix: React.FC = () => {
               whileHover={{ y: -6 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               key={idx}
-              className="skill-card rounded-3xl glass-panel border border-slate-800 p-6 md:p-8 flex flex-col justify-between hover:border-indigo-500/40 transition-all hover:shadow-xl hover:shadow-indigo-950/40"
+              className="skill-card rounded-3xl bg-white dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 p-6 md:p-8 flex flex-col justify-between hover:border-indigo-400 dark:hover:border-indigo-500/40 shadow-sm hover:shadow-lg transition-all"
             >
               <div>
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className="p-3 rounded-2xl bg-slate-900 border border-slate-700/80 shadow-inner">
+                  <div className="p-3 rounded-2xl bg-indigo-50 dark:bg-slate-900 border border-indigo-100 dark:border-slate-700/80 shadow-sm">
                     {getIcon(category.icon)}
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-lg">{category.title}</h3>
-                    <p className="text-xs text-slate-400">{category.description}</p>
+                    <h3 className="font-bold text-slate-900 dark:text-white text-lg">{category.title}</h3>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">{category.description}</p>
                   </div>
                 </div>
 
@@ -95,23 +95,23 @@ export const SkillsMatrix: React.FC = () => {
                       className="group cursor-default"
                     >
                       <div className="flex justify-between items-center text-xs font-mono mb-1.5">
-                        <span className="text-slate-200 group-hover:text-cyan-300 transition-colors font-medium">
+                        <span className="text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-cyan-300 transition-colors font-medium">
                           {skill.name}
                         </span>
-                        <span className="text-slate-500 group-hover:text-indigo-400 transition-colors">
+                        <span className="text-slate-500 dark:text-slate-500 font-semibold">
                           {skill.level}%
                         </span>
                       </div>
 
                       {/* Progress Bar with Glow */}
-                      <div className="w-full h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-800 p-[1px]">
+                      <div className="w-full h-2 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden border border-slate-200 dark:border-slate-800 p-[1px]">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-cyan-400 to-emerald-400 transition-all duration-1000 ease-out shadow-sm"
+                          className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-cyan-500 to-emerald-500 transition-all duration-1000 ease-out shadow-sm"
                           style={{ width: `${skill.level}%` }}
                         />
                       </div>
 
-                      <div className="text-[11px] text-slate-500 mt-1 font-mono">
+                      <div className="text-[11px] text-slate-500 dark:text-slate-500 mt-1 font-mono">
                         {skill.tags}
                       </div>
                     </div>
@@ -120,17 +120,17 @@ export const SkillsMatrix: React.FC = () => {
               </div>
 
               {/* Bottom pill badge */}
-              <div className="mt-8 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-500">
+              <div className="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-500 dark:text-slate-500 font-semibold">
                 <span>VERIFIED PRODUCTION-READY</span>
-                <CheckCircle className="w-4 h-4 text-emerald-400" />
+                <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               </div>
             </motion.div>
           ))}
         </div>
 
         {/* Floating Quick Tech Cloud */}
-        <div className="mt-14 p-6 rounded-3xl glass-panel-glow border border-indigo-500/20 text-center">
-          <span className="text-xs font-mono text-cyan-400 block mb-3 uppercase tracking-wider">
+        <div className="mt-14 p-6 rounded-3xl bg-white dark:bg-slate-950/70 border border-slate-200 dark:border-indigo-500/20 text-center shadow-sm">
+          <span className="text-xs font-mono text-indigo-600 dark:text-cyan-400 block mb-3 uppercase tracking-wider font-semibold">
             ADDITIONAL TOOLS, LIBRARIES & PROTOCOLS
           </span>
           <div className="flex flex-wrap justify-center gap-2 max-w-4xl mx-auto">
@@ -145,7 +145,7 @@ export const SkillsMatrix: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
                 key={idx}
                 onClick={() => sounds.playClick()}
-                className="px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-400/40 text-xs font-mono text-slate-300 hover:text-cyan-300 cursor-pointer transition-all"
+                className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-indigo-50 dark:bg-slate-900/80 dark:hover:bg-indigo-600/20 border border-slate-200 dark:border-slate-800 text-xs font-mono text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-cyan-300 cursor-pointer transition-all font-medium"
               >
                 #{tech}
               </motion.span>

@@ -439,17 +439,17 @@ export const CyberPet: React.FC<CyberPetProps> = ({ lightColor, lightIntensity }
               sounds.playClick();
               setShowMenu(!showMenu);
             }}
-            className="flex items-center space-x-2 px-3.5 py-2 rounded-full glass-panel-glow border border-indigo-500/30 hover:border-cyan-400/60 shadow-lg text-xs text-white transition-all hover:scale-105 group"
+            className="flex items-center space-x-2 px-3.5 py-2 rounded-full glass-panel-glow border border-indigo-500/30 hover:border-cyan-400/60 shadow-lg text-xs transition-all hover:scale-105 group"
           >
             <span className="text-base group-hover:scale-125 transition-transform">
               {petDetails[petType].icon}
             </span>
             <div className="flex flex-col text-left">
-              <span className="font-bold text-[11px] leading-tight flex items-center gap-1 text-slate-200 group-hover:text-cyan-300">
+              <span className="font-bold text-[11px] leading-tight flex items-center gap-1 text-slate-900 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-cyan-300">
                 {petDetails[petType].name}
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
               </span>
-              <span className="text-[9px] font-mono text-slate-400">
+              <span className="text-[9px] font-mono text-slate-600 dark:text-slate-400">
                 {isMoving ? '🐾 Chasing Cursor' : isSleeping ? '💤 Resting' : '✨ Exploring'}
               </span>
             </div>

@@ -59,7 +59,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTerminal }) => {
           {/* Left Column: Bio & CTA */}
           <div className="lg:col-span-6 space-y-6">
             {/* Availability Pill */}
-            <div className="hero-badge inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono tracking-wide">
+            <div className="hero-badge inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-mono font-semibold tracking-wide">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -69,23 +69,24 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTerminal }) => {
 
             {/* Main Headline */}
             <div className="space-y-3">
-              <h1 className="hero-title text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
+              <h1 className="hero-title text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
                 Frontend Developer <br />
                 <span className="cyber-gradient-text">& AI Architect</span>
               </h1>
-              <p className="hero-desc text-slate-400 text-base sm:text-lg max-w-xl leading-relaxed">
-                Hello, I&apos;m <span className="text-white font-medium">{profile.name}</span> — Frontend Developer at Orbital Webworks, crafting high-performance Next.js interfaces with GSAP ScrollTrigger, Framer Motion, and autonomous Gemini AI architectures.
+              <p className="hero-desc text-slate-600 dark:text-slate-400 text-base sm:text-lg max-w-xl leading-relaxed">
+                Hello, I&apos;m <span className="text-slate-900 dark:text-white font-semibold">{profile.name}</span> — Frontend Developer at Orbital Webworks, crafting high-performance Next.js interfaces with GSAP ScrollTrigger, Framer Motion, and autonomous Gemini AI architectures.
               </p>
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-wrap items-center gap-4 pt-2"style={{opacity:1}}>
               <motion.a
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 href="#projects"
                 onClick={() => sounds.playClick()}
-                className="hero-btn group relative inline-flex items-center space-x-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-medium text-sm shadow-lg shadow-indigo-600/30 hover:shadow-cyan-500/40 transition-all"
+                style={{opacity:1}}
+                className="hero-btn group relative inline-flex items-center space-x-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-semibold text-sm shadow-lg shadow-indigo-600/30 hover:shadow-cyan-500/40 transition-all"
               >
                 <span>View My Projects</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -94,24 +95,28 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTerminal }) => {
               <motion.a
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
-                href="#resume"
+                href={profile.resumeUrl || "/Sristhi_Saha_Resume.pdf"}
+                target="_blank"
+                rel="noreferrer"
+                style={{opacity:1}}
                 onClick={() => sounds.playClick()}
-                className="hero-btn inline-flex items-center space-x-2 px-5 py-3.5 rounded-2xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-sm font-medium transition-all"
+                className="hero-btn inline-flex items-center space-x-2 px-5 py-3.5 rounded-2xl bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:hover:bg-indigo-500/20 border border-indigo-200 dark:border-indigo-500/30 text-indigo-700 dark:text-indigo-300 text-sm font-semibold transition-all shadow-sm"
               >
-                <FileText className="w-4 h-4 text-indigo-400" />
+                <FileText className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                 <span>Resume / CV</span>
               </motion.a>
 
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
+                style={{opacity:1}}
                 onClick={() => {
                   sounds.playWarp();
                   onOpenTerminal();
                 }}
-                className="hero-btn inline-flex items-center space-x-2 px-5 py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/80 text-slate-200 text-sm font-mono transition-all"
+                className="hero-btn inline-flex items-center space-x-2 px-5 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-900/80 dark:hover:bg-slate-800/90 border border-slate-300 dark:border-slate-700/80 text-slate-800 dark:text-slate-200 text-sm font-mono font-medium transition-all shadow-sm"
               >
-                <Terminal className="w-4 h-4 text-cyan-400" />
+                <Terminal className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                 <span>Terminal</span>
               </motion.button>
 
@@ -119,21 +124,21 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTerminal }) => {
                 whileHover={{ scale: 1.05 }}
                 href="#contact"
                 onClick={() => sounds.playClick()}
-                className="hero-btn inline-flex items-center space-x-2 px-4 py-3.5 rounded-2xl text-slate-400 hover:text-white text-sm font-medium transition-colors"
+                className="hero-btn inline-flex items-center space-x-2 px-4 py-3.5 rounded-2xl text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white text-sm font-semibold transition-colors"
               >
-                <Sparkles className="w-4 h-4 text-indigo-400" />
+                <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                 <span>Contact</span>
               </motion.a>
             </div>
 
             {/* Real-time Metrics Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-slate-800/80">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-slate-200 dark:border-slate-800/80">
               {profile.stats.map((stat, idx) => (
                 <div key={idx} className="hero-stat space-y-1">
-                  <div className="text-2xl sm:text-3xl font-bold font-mono text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300">
+                  <div className="text-2xl sm:text-3xl font-bold font-mono text-slate-900 dark:text-white">
                     {stat.value}
                   </div>
-                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider">
+                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider font-medium">
                     {stat.label}
                   </div>
                 </div>

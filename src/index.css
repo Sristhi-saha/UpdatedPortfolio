@@ -69,8 +69,8 @@
 .cyber-grid {
   background-size: 40px 40px;
   background-image: 
-    linear-gradient(to right, rgba(99, 102, 241, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(99, 102, 241, 0.07) 1px, transparent 1px);
+    linear-gradient(to right, rgba(99, 102, 241, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(99, 102, 241, 0.12) 1px, transparent 1px);
 }
 
 .radial-mask {
@@ -94,7 +94,7 @@
 }
 
 /* ============================================================
-   LIGHT MODE (Crisp, High-End, Clean Designer Aesthetic)
+   LIGHT MODE (Refined, Premium Designer Aesthetic)
    ============================================================ */
 html.light {
   color-scheme: light;
@@ -102,7 +102,7 @@ html.light {
 
 html.light body {
   background-color: #f8fafc;
-  color: #1e293b;
+  color: #0f172a;
 }
 
 html.light ::-webkit-scrollbar-track {
@@ -112,59 +112,37 @@ html.light ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #6366f1, #0284c7);
 }
 
-/* Crisp Cards */
+/* Clean High-Contrast Cards */
 html.light .glass-panel {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02) !important;
 }
 
 html.light .glass-panel:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.08);
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.08) !important;
 }
 
 html.light .glass-panel-glow {
-  background: #ffffff;
-  border: 1px solid rgba(99, 102, 241, 0.35);
-  box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.12), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+  background: #ffffff !important;
+  border: 1px solid rgba(99, 102, 241, 0.25) !important;
+  box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.02) !important;
 }
 
-/* Headings and Typography in Light Mode */
-html.light h1,
-html.light h2,
-html.light h3,
-html.light h4,
-html.light h5,
-html.light h6 {
-  color: #0f172a;
-}
-
+/* Gradient Text for Light Mode: Rich Indigo -> Violet -> Blue */
 html.light .cyber-gradient-text {
-  background: linear-gradient(135deg, #0f172a 10%, #4f46e5 50%, #0284c7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: linear-gradient(135deg, #4338ca 0%, #6366f1 50%, #0284c7 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
 }
 
-/* Muted & Body Text */
-html.light p {
-  color: #334155;
-}
-
-html.light .text-slate-400 {
-  color: #475569;
-}
-
-html.light .text-slate-300 {
-  color: #334155;
-}
-
-html.light .text-slate-200 {
-  color: #1e293b;
-}
-
-html.light .text-slate-500 {
-  color: #64748b;
+/* Grid in Light Mode (Crisp, High-Contrast Blueprint Boxes) */
+html.light .cyber-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(99, 102, 241, 0.22) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(99, 102, 241, 0.22) 1px, transparent 1px) !important;
 }
 
 /* Ensure ALL gradient buttons keep pure white text */
@@ -175,31 +153,9 @@ html.light button[class*="from-indigo-600"] span {
   color: #ffffff !important;
 }
 
-/* Badges & secondary elements */
-html.light .bg-slate-900 {
-  background-color: #f1f5f9;
-}
-
-html.light .border-slate-800,
-html.light .border-slate-800\/80,
-html.light .border-slate-800\/70,
-html.light .border-slate-700,
-html.light .border-slate-700\/80,
-html.light .border-slate-700\/60,
-html.light .border-slate-900 {
-  border-color: #e2e8f0;
-}
-
-/* Grid on light background */
-html.light .cyber-grid {
-  background-image: 
-    linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
-}
-
-/* Preserve Dark Terminal in Modal & Code Cards for authentic developer look */
-html.light .terminal-window,
-html.light .code-window {
+/* Preserve Dark Terminal in Code Cards for authentic developer aesthetic */
+html.light .code-window,
+html.light .terminal-window {
   background-color: #0b0f19 !important;
   color: #e2e8f0 !important;
   border-color: rgba(99, 102, 241, 0.3) !important;

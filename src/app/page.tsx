@@ -69,7 +69,7 @@ export default function HomePage() {
       {/* Background Cyber Grid & Radial Overlay */}
       <div
         className={`fixed inset-0 cyber-grid ${
-          theme === 'dark' ? 'opacity-70' : 'opacity-40'
+          theme === 'dark' ? 'opacity-80' : 'opacity-100'
         } pointer-events-none z-0`}
       />
       {theme === 'dark' && (
@@ -110,11 +110,11 @@ export default function HomePage() {
       {/* Main Content Layout with GSAP ScrollTrigger Sections */}
       <main className="relative z-10">
         <Hero onOpenTerminal={() => setTerminalOpen(true)} />
-        <About />
+        {/* <About /> */}
         <ExperienceTimeline />
         <Projects />
-        <ResumeSection />
-        <SkillsMatrix />
+        {/* <ResumeSection /> */}
+        {/* <SkillsMatrix /> */}
         <Contact />
       </main>
 
