@@ -150,7 +150,7 @@ export const PORTFOLIO_DATA = {
     // ,
     {
       id: "e-commerce-app",
-      title: "Full-Stack MERN E-Commerce Platform",
+      title: "Zenvora",
       category: "Full-Stack & Systems",
       description: "Comprehensive online shopping system with product search, filtering, Redux Toolkit cart state, user profiles, and order management.",
       longDescription: "Engineered a full-featured MERN e-commerce application with secure admin dashboard, inventory management, user authentication, customer reviews, and responsive mobile-optimized checkout workflows.",
