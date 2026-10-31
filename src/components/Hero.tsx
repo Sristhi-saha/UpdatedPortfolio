@@ -70,8 +70,8 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTerminal }) => {
             {/* Main Headline */}
             <div className="space-y-3">
               <h1 className="hero-title text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
-                Frontend Developer <br />
-                <span className="cyber-gradient-text">& AI Architect</span>
+                Frontend <br />
+                <span className="cyber-gradient-text">& FullStack AI Developer</span>
               </h1>
               <p className="hero-desc text-slate-600 dark:text-slate-400 text-base sm:text-lg max-w-xl leading-relaxed">
                 Hello, I&apos;m <span className="text-slate-900 dark:text-white font-semibold">{profile.name}</span> — Frontend Developer at Orbital Webworks, crafting high-performance Next.js interfaces with GSAP ScrollTrigger, Framer Motion, and autonomous Gemini AI architectures.
