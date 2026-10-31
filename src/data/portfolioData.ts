@@ -135,7 +135,7 @@ export const PORTFOLIO_DATA = {
     },
     {
       id: "chat-app",
-      title: "Socket.IO Real-Time Chat Engine",
+      title: "RippleRoom",
       category: "Full-Stack & Systems",
       description: "Bi-directional real-time messaging application with room management, live presence tracking, typing indicators, and message persistence.",
       longDescription: "Engineered with Node.js, Express, Socket.io, and React. Handles concurrent WebSocket connections, room channels, JWT authenticated session handshakes, and responsive desktop/mobile chat views.",
